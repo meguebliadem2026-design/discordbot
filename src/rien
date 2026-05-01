@@ -1,16 +1,1 @@
-{
-  "name": "@workspace/discord-invites",
-  "version": "0.0.0",
-  "private": true,
-  "type": "commonjs",
-  "scripts": {
-    "start": "node src/index.js",
-    "dev": "node src/index.js",
-    "typecheck": "echo 'no typecheck'"
-  },
-  "dependencies": {
-    "discord.js": "^14.16.3",
-    "express": "^5.2.1",
-    "ms": "^2.1.3"
-  }
-}
+
