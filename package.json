@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "type": "commonjs",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "node src/index.js",
-    "typecheck": "echo 'no typecheck'"
+    "start": "node src/index.js"
   },
   "dependencies": {
     "discord.js": "^14.16.3",
