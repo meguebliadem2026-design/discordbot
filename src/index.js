@@ -1,15 +1,11 @@
 const {
   Client,
   GatewayIntentBits,
-  Collection,
   EmbedBuilder,
   SlashCommandBuilder,
   REST,
   Routes,
   MessageFlags,
-  ActionRowBuilder,
-  StringSelectMenuBuilder,
-  PermissionsBitField,
 } = require('discord.js');
 
 const fs = require('fs');
@@ -31,7 +27,7 @@ if (!CLIENT_ID) {
 
 const GUILD_ID = '1474882664635957278';
 
-// 📁 SAFE PATH (Render)
+// 📁 SAFE PATH
 const DATA_DIR = path.join(process.cwd(), 'data');
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
@@ -92,11 +88,28 @@ client.on('messageCreate', (message) => {
 
   xpData[id].xp += Math.floor(Math.random() * 10) + 5;
 
-  const level = getLevel(xpData[id].xp);
+  const newLevel = getLevel(xpData[id].xp);
 
-  if (level > xpData[id].level) {
-    xpData[id].level = level;
-    message.channel.send(`📈 GG <@${id}> level ${level}`);
+  if (newLevel > xpData[id].level) {
+    xpData[id].level = newLevel;
+
+    const channel = message.guild.channels.cache.get("1499439112552317133");
+
+    const embed = new EmbedBuilder()
+      .setColor("Green")
+      .setTitle("📈 Level Up !")
+      .setDescription(`GG <@${id}> tu viens de passer level **${newLevel}** 🎉`)
+      .addFields(
+        { name: "Level", value: `${newLevel}`, inline: true },
+        { name: "XP", value: `${xpData[id].xp}`, inline: true }
+      )
+      .setThumbnail(message.author.displayAvatarURL());
+
+    if (channel) {
+      channel.send({ content: `<@${id}>`, embeds: [embed] });
+    } else {
+      message.channel.send("❌ Salon level introuvable");
+    }
   }
 
   save(XP_FILE, xpData);
@@ -106,7 +119,6 @@ client.on('messageCreate', (message) => {
 client.on('interactionCreate', async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
-  // RANK
   if (interaction.commandName === 'rank') {
     const data = xpData[interaction.user.id] || { xp: 0, level: 0 };
 
@@ -123,13 +135,11 @@ client.on('interactionCreate', async (interaction) => {
     });
   }
 
-  // INVITES
   if (interaction.commandName === 'invites') {
     const count = invitesData[interaction.user.id] || 0;
     return interaction.reply(`📊 Tu as **${count} invites**`);
   }
 
-  // LEADERBOARD
   if (interaction.commandName === 'leaderboard') {
     const top = Object.entries(invitesData)
       .sort((a, b) => b[1] - a[1])
