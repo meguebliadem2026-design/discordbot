@@ -1,7 +1,7 @@
 {
   "name": "discordbot",
   "version": "1.0.0",
-  "description": "Discord bot with moderation, invites, XP and tickets system",
+  "description": "Discord bot XP invites tickets moderation",
   "type": "commonjs",
   "main": "src/index.js",
   "scripts": {
